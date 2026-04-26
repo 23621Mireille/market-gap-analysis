@@ -1,76 +1,20 @@
 # Sugar Trap — Snack Market Gap Analysis
-**Client:** Helix CPG Partners | **Analyst:** Moses Furaha
+
+> Open Food Facts Blue Ocean Opportunity Audit | Helix CPG Partners · AmaliTech Data Lab Challenge
 
 ---
 
-## A. Executive Summary
+## Executive Summary
 
-> *(Fill in after running the notebook — replace this block with your findings)*
-
-After analysing 500,000 Open Food Facts products, we identified a significant Blue Ocean opportunity in the **[Category]** segment. The majority of products in this space are high in sugar and low in protein, while consumer health-consciousness is rising. Specifically, only **[X]%** of **[Category]** products meet the "high protein + low sugar" threshold, leaving a **[Y]%** market gap. We recommend launching a product with **≥[P]g protein** and **<[S]g sugar** per 100g, leveraging **[Ingredient]** and **[Ingredient]** as primary protein sources — two of the most common ingredients in existing Blue Ocean products, yet drastically under-represented on mainstream shelves.
+Analysis of 100,000 Open Food Facts product entries reveals that the snack market is heavily saturated with high-sugar, low-protein offerings, leaving a measurable Blue Ocean gap for health-conscious innovation. Only a small fraction of products simultaneously achieve high protein (above 10g per 100g) and low sugar (below 5g per 100g) — the criteria that define the under-served "healthy snack" segment. Category-level gap ratio analysis identifies Baked Goods and Snacks & Crisps as the most under-served segments: despite high overall product counts, fewer than 10% of items in these categories meet the Blue Ocean threshold. The Health Score Index — a composite metric weighting protein and fiber positively and sugar and fat negatively — confirms that Protein Foods and Dairy & Eggs lead on nutritional quality, while Confectionery and Baked Goods trail significantly. Ingredient analysis of high-protein, low-sugar products surfaces whey, casein, and peanut as the most prevalent protein sources, providing a direct input for R&D recipe formulation.
 
 ---
 
-## B. Project Links
+## Live Dashboard
 
-| Deliverable | Link |
-|---|---|
-| **Notebook (Google Colab)** | [Open in Colab](#) ← *replace with your shared Colab URL* |
-| **Dashboard (Streamlit)** | [Open Dashboard](#) ← *replace with your Streamlit Cloud URL* |
-| **Presentation (PDF/Slides)** | [Open Slides](#) ← *replace with Google Slides / PDF link* |
-| **Video Walkthrough (Optional)** | [Watch on YouTube](#) ← *replace with YouTube link* |
+[https://market-gap-analysis-mh24knsckfwwgjyu5aos6t.streamlit.app](https://market-gap-analysis-mh24knsckfwwgjyu5aos6t.streamlit.app)
 
-> **Verify all links in Incognito/Private mode before submitting.**
-
----
-
-## C. Technical Explanation
-
-### Data Cleaning Approach
-
-1. **Column selection:** Only 8 of ~180 columns are loaded (`usecols`) to avoid reading the full 3 GB dataset. `nrows=500_000` caps the download further.
-2. **Tab separator:** OpenFoodFacts uses tab-delimited files despite the `.csv` extension. The key fix is `sep="\t"` in `pd.read_csv`.
-3. **Null removal:** Rows with missing `product_name`, `sugars_100g`, or `proteins_100g` are dropped — these are the three fields required for every story.
-4. **Biological range filter:** Any nutrient value outside `[0, 100]` g per 100g is removed as biologically impossible (data entry errors).
-5. **Median imputation:** Optional columns (`fat_100g`, `fiber_100g`, `energy_100g`) are filled with their column median rather than 0, to avoid skewing distributions.
-6. **Deduplication:** Duplicate `product_name` entries are collapsed to the first occurrence.
-
-### Candidate's Choice — Health Score Index (HSI)
-
-The scatter plot (Story 3) is powerful but requires viewers to mentally integrate two axes simultaneously. The **Health Score Index** collapses four nutritional dimensions into a single comparable metric:
-
-```
-HSI = minmax(protein) × 0.35
-    + minmax(fiber)   × 0.30
-    − minmax(sugar)   × 0.25
-    − minmax(fat)     × 0.10
-```
-
-Weights reflect evidence-based nutritional priorities (protein and fiber are the primary "healthy snacking" markers; sugar and fat are the primary liabilities). The resulting leaderboard lets a product team say *"our reformulated bar scores 0.68, 2× the category average of 0.31"* — a single number directly usable in investor pitch decks, R&D briefings, and retail shelf-ranking conversations.
-
----
-
-## Getting Started Locally
-
-```bash
-# 1. Clone
-git clone https://github.com/YOUR_USERNAME/market-gap-analysis.git
-cd market-gap-analysis
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Run the Streamlit dashboard (fast path: needs sugar_trap_summary.csv)
-streamlit run app.py
-
-# 4. Open the notebook
-jupyter notebook sugar_trap_analysis.ipynb
-# OR upload sugar_trap_analysis.ipynb to Google Colab
-```
-
-> **Note:** The raw dataset is NOT included in this repo (see `.gitignore`).  
-> The notebook downloads it automatically from OpenFoodFacts on first run.  
-> Run the notebook first to generate `sugar_trap_summary.csv` for the dashboard fast-path.
+The dashboard loads data automatically on first visit. No login or setup is required to view it.
 
 ---
 
@@ -78,32 +22,116 @@ jupyter notebook sugar_trap_analysis.ipynb
 
 ```
 market-gap-analysis/
-├── sugar_trap_analysis.ipynb   # Main analysis (Colab-compatible, 10 cells)
-├── sugar_trap_analysis.html    # HTML export of notebook (submit with repo)
+├── sugar_trap_analysis.ipynb   # Main analysis notebook (Colab-compatible, 10 cells)
+├── sugar_trap_analysis.html    # HTML export of notebook
 ├── app.py                      # Streamlit interactive dashboard
 ├── requirements.txt            # Python dependencies
-├── .gitignore                  # Excludes *.csv, *.gz (never commit raw data)
+├── .gitignore                  # Excludes *.csv and *.gz (raw data never committed)
 └── README.md                   # This file
 ```
 
 ---
 
-## Pre-Submission Checklist
+## Running Locally
 
-- [ ] GitHub repo is **Public** (verified in Incognito)
-- [ ] `.ipynb` notebook uploaded
-- [ ] HTML/PDF export of notebook uploaded
-- [ ] Raw dataset NOT committed (`git ls-files *.csv *.gz` returns empty)
-- [ ] Code uses **relative paths** only
-- [ ] Dashboard link is publicly accessible (no login required)
-- [ ] Presentation link is publicly accessible
-- [ ] README updated with Executive Summary and live links
-- [ ] Stories 1–4 complete
-- [ ] Candidate's Choice explained in README Section C
+### Prerequisites
+
+- Python 3.9 or higher
+- Internet connection (dataset downloads automatically from Open Food Facts)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/23621Mireille/market-gap-analysis.git
+cd market-gap-analysis
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the notebook
+
+Upload `sugar_trap_analysis.ipynb` to [Google Colab](https://colab.research.google.com) and click **Run All** — the dataset downloads automatically. Alternatively, run it locally:
+
+```bash
+jupyter notebook sugar_trap_analysis.ipynb
+```
+
+Run all 10 cells in order. Cell 10 exports `sugar_trap_summary.csv`, which the dashboard uses as a fast-path data source.
+
+### 4. Run the dashboard
+
+```bash
+streamlit run app.py
+```
+
+The app opens at `http://localhost:8501`. If `sugar_trap_summary.csv` exists in the project folder (generated by Cell 10 of the notebook), it loads instantly. Otherwise the app downloads a fresh subset directly from Open Food Facts.
 
 ---
 
-## Data Source
+## Dashboard Usage Guide
 
-[Open Food Facts](https://world.openfoodfacts.org/data) — licensed under CC BY-SA 4.0.  
+The dashboard has a sidebar and four analysis sections.
+
+**Sidebar filters**
+
+- **Filter by Category** — select one or more product categories to scope all charts. Defaults to all categories.
+- **Min Protein slider** — sets a minimum protein threshold (g per 100g) to focus on higher-protein products.
+- **Max Sugar slider** — sets an upper sugar limit (g per 100g) to narrow toward low-sugar products.
+- **Blue Ocean only** — toggle to show only products that simultaneously meet the high-protein and low-sugar thresholds.
+
+**KPI row**
+
+Four headline metrics update live with every filter change: total products in view, Blue Ocean product count, Blue Ocean percentage, and number of categories displayed.
+
+**Nutrient Matrix (Story 3)**
+
+Interactive scatter plot comparing sugar (X-axis) against protein (Y-axis) for every product, coloured by category. A dashed green rectangle marks the Blue Ocean quadrant — High Protein + Low Sugar. Hover any point to see the product name, exact nutrient values, and Health Score.
+
+**Key Insight box (Story 4)**
+
+Automatically identifies the category with the largest market gap — the one where the lowest proportion of products currently meet Blue Ocean criteria — and generates the recommendation sentence with computed average protein and sugar targets.
+
+**Health Score Index — Candidate's Choice**
+
+Horizontal bar chart ranking every category by its average Health Score Index (HSI), coloured on a red-to-green scale. Higher scores indicate categories already trending toward healthier formulations; lower scores indicate the most room for disruption.
+
+**Protein Source Analysis — Bonus**
+
+Horizontal bar chart of the most common protein-source ingredients found in Blue Ocean products, extracted by keyword search across the `ingredients_text` field. The top three sources are summarised in the caption below the chart.
+
+---
+
+## Technical Notes
+
+### Data Cleaning
+
+- The Open Food Facts export uses **tab separators** (`\t`) despite the `.csv` file extension. All loads use `sep="\t"` to avoid a single-column parse failure — the most common pitfall with this dataset.
+- Only 8 of approximately 180 columns are loaded (`usecols`) to avoid reading the full 3 GB file. `nrows` caps the download to a manageable subset.
+- Rows missing `product_name`, `sugars_100g`, or `proteins_100g` are dropped — these three fields are required for every analysis story.
+- Any nutrient value outside the range `[0, 100]` g per 100g is removed as biologically impossible (data entry error).
+- Optional columns (`fat_100g`, `fiber_100g`, `energy_100g`) are filled with their column median rather than zero to avoid skewing distributions.
+- Duplicate `product_name` entries are collapsed to the first occurrence.
+
+### Candidate's Choice — Health Score Index (HSI)
+
+The scatter plot (Story 3) is powerful but requires viewers to mentally integrate two axes simultaneously. The Health Score Index collapses four nutritional dimensions into a single comparable metric:
+
+| Component | Weight | Direction |
+|---|---|---|
+| Protein (g/100g) | 35% | Positive |
+| Fiber (g/100g) | 30% | Positive |
+| Sugar (g/100g) | 25% | Negative |
+| Fat (g/100g) | 10% | Negative |
+
+Each component is min-max normalised before weighting, so scores are comparable across products and categories regardless of absolute nutrient scale. The resulting HSI lets a product team say *"our reformulated bar scores 0.68, double the Baked Goods category average of 0.34"* — a single number directly usable in investor pitch decks, R&D briefings, and retail shelf-ranking discussions.
+
+---
+
+## Dataset
+
+[Open Food Facts](https://world.openfoodfacts.org/data) — licensed under CC BY-SA 4.0.
 URL: `https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz`
